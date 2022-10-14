@@ -3,21 +3,22 @@ package warmup
 import (
 	"fmt"
 	"net"
+	"sync"
 )
 
-var ipCache = map[string][]net.IP{}
+var ipCache sync.Map //  map[string][]net.IP{}
 
-func getIPs(domainName, pop string, netLookup NetLookup) ([]net.IP, error) {
-	if ips, ok := ipCache[pop]; ok {
-		return ips, nil
-	}
-
-	popDomain := fmt.Sprintf("%s.%s.cloudfront.net", domainName, pop)
+func getUncachedIps(domainName, pointOfPresence string, netLookup NetLookup) []net.IP {
+	popDomain := fmt.Sprintf("%s.%s.cloudfront.net", domainName, pointOfPresence)
 	ips, err := netLookup.LookupIP(popDomain)
 	if err != nil {
-		return nil, fmt.Errorf("error looking up %s: %s", popDomain, err)
+		fmt.Printf("error looking up %s: %s", popDomain, err)
 	}
 
-	ipCache[pop] = ips
-	return ips, nil
+	return ips
+}
+
+func getIPs(domainName, pointOfPresence string, netLookup NetLookup) []net.IP {
+	actual, _ := ipCache.LoadOrStore(pointOfPresence, getUncachedIps(domainName, pointOfPresence, netLookup))
+	return actual.([]net.IP)
 }

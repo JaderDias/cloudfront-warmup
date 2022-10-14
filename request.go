@@ -22,11 +22,7 @@ func request(
 		func(i int) {
 			pointOfPresence := pointsOfPresence[i]
 			log.Printf("Requesting %s from %s", uri, pointOfPresence)
-			ips, err := getIPs(subdomain, pointOfPresence, netLookup)
-			if err != nil {
-				fmt.Printf("error looking up %s: %v", pointOfPresence, err)
-			}
-
+			ips := getIPs(subdomain, pointOfPresence, netLookup)
 			for _, ip := range ips {
 				if ip.To4() == nil {
 					// AWS Lambda doesn't support IPv6 outgoing connections
