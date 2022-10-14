@@ -3,11 +3,13 @@ package warmup
 import (
 	"fmt"
 	"log"
+
+	"github.com/aws/aws-lambda-go/events"
 )
 
 func warmup(
 	domainName string,
-	event LambdaEvent,
+	event events.S3Event,
 	pointsOfPresence []string,
 	netLookup NetLookup,
 	httpClientFactory HttpClientFactory,
@@ -25,7 +27,7 @@ func warmup(
 	return nil
 }
 
-func Warmup(domainName string, event LambdaEvent) error {
+func Warmup(domainName string, event events.S3Event) error {
 	return warmup(
 		domainName,
 		event,

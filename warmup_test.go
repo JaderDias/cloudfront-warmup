@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -49,7 +50,7 @@ func TestWarmup(t *testing.T) {
 	tests := []struct {
 		domainName       string
 		pointsOfPresence []string
-		event            LambdaEvent
+		event            events.S3Event
 		expectError      error
 		expectUris       []string
 		expectHosts      []string
@@ -59,11 +60,11 @@ func TestWarmup(t *testing.T) {
 			pointsOfPresence: []string{
 				"AKL50-C1",
 			},
-			event: LambdaEvent{
-				Records: []Record{
+			event: events.S3Event{
+				Records: []events.S3EventRecord{
 					{
-						S3: S3{
-							Object: Object{
+						S3: events.S3Entity{
+							Object: events.S3Object{
 								Key: "test",
 							},
 						},
