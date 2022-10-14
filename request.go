@@ -9,7 +9,7 @@ import (
 )
 
 func request(
-	domainName,
+	subdomain,
 	uri string,
 	pointsOfPresence []string,
 	netLookup NetLookup,
@@ -22,7 +22,7 @@ func request(
 		func(i int) {
 			pointOfPresence := pointsOfPresence[i]
 			log.Printf("Requesting %s from %s", uri, pointOfPresence)
-			ips, err := getIPs(domainName, pointOfPresence, netLookup)
+			ips, err := getIPs(subdomain, pointOfPresence, netLookup)
 			if err != nil {
 				fmt.Printf("error looking up %s: %v", pointOfPresence, err)
 			}

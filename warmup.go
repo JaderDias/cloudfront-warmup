@@ -3,6 +3,7 @@ package warmup
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
 )
@@ -14,6 +15,11 @@ func warmup(
 	netLookup NetLookup,
 	httpClientFactory HttpClientFactory,
 ) error {
+	domain := strings.Split(domainName, ".")
+	if len(domain) < 3 {
+		return fmt.Errorf("domain name should be in the abcdefgijklm.cloudfront.net format")
+	}
+
 	if len(event.Records) == 0 {
 		return fmt.Errorf("no records in event")
 	}
@@ -21,7 +27,7 @@ func warmup(
 	for _, record := range event.Records {
 		uri := fmt.Sprintf("https://%s/%s", domainName, record.S3.Object.Key)
 		log.Printf("uri: %s", uri)
-		request(domainName, uri, pointsOfPresence, netLookup, httpClientFactory)
+		request(domain[0], uri, pointsOfPresence, netLookup, httpClientFactory)
 	}
 
 	return nil

@@ -1,6 +1,7 @@
 package warmup
 
 import (
+	"fmt"
 	"net"
 	"net/http"
 	"testing"
@@ -71,12 +72,31 @@ func TestWarmup(t *testing.T) {
 					},
 				},
 			},
+			expectError: fmt.Errorf("domain name should be in the abcdefgijklm.cloudfront.net format"),
+			expectHosts: []string{},
+			expectUris:  []string{},
+		}, {
+			domainName: "example.cloudfront.net",
+			pointsOfPresence: []string{
+				"AKL50-C1",
+			},
+			event: events.S3Event{
+				Records: []events.S3EventRecord{
+					{
+						S3: events.S3Entity{
+							Object: events.S3Object{
+								Key: "test",
+							},
+						},
+					},
+				},
+			},
 			expectError: nil,
 			expectHosts: []string{
 				"example.AKL50-C1.cloudfront.net",
 			},
 			expectUris: []string{
-				"https://example/test",
+				"https://example.cloudfront.net/test",
 			},
 		},
 	}
