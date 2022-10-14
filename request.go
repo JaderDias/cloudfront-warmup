@@ -21,7 +21,6 @@ func request(
 		len(pointsOfPresence),
 		func(i int) {
 			pointOfPresence := pointsOfPresence[i]
-			log.Printf("Requesting %s from %s", uri, pointOfPresence)
 			ips := getIPs(subdomain, pointOfPresence, netLookup)
 			for _, ip := range ips {
 				if ip.To4() == nil {
@@ -32,7 +31,8 @@ func request(
 				client := httpClientFactory.Get(ip)
 				response, err := client.Get(uri)
 				if err != nil {
-					fmt.Printf("request for %s ip %s failed: %s", pointOfPresence, ip, err)
+					fmt.Printf("request for %s ip %s failed: %s\n", pointOfPresence, ip, err)
+					continue
 				}
 
 				log.Printf(

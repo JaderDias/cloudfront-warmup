@@ -12,7 +12,7 @@ func getUncachedIps(domainName, pointOfPresence string, netLookup NetLookup) []n
 	popDomain := fmt.Sprintf("%s.%s.cloudfront.net", domainName, pointOfPresence)
 	ips, err := netLookup.LookupIP(popDomain)
 	if err != nil {
-		fmt.Printf("error looking up %s: %s", popDomain, err)
+		fmt.Printf("error looking up %s: %s\n", popDomain, err)
 	}
 
 	return ips
