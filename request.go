@@ -16,6 +16,7 @@ func request(
 	httpClientFactory HttpClientFactory,
 ) {
 	numberOfWorkers := runtime.NumCPU() * 4 // optimal number for my use case
+	log.Printf("number of workers: %d", numberOfWorkers)
 	limiter.BoundedConcurrency(
 		numberOfWorkers,
 		len(pointsOfPresence),
