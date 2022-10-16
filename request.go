@@ -36,6 +36,10 @@ func request(
 					continue
 				}
 
+				if response.Body != nil {
+					response.Body.Close()
+				}
+
 				log.Printf(
 					"x-amz-cf-pop %s ip %s response status %s x-cache %s ",
 					response.Header.Get("x-amz-cf-pop"),
