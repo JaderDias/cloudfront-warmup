@@ -36,11 +36,11 @@ func request(
 				}
 
 				log.Printf(
-					"response for %s status %s x-cache %s x-amz-cf-pop %s",
+					"x-amz-cf-pop %s ip %s response status %s x-cache %s ",
+					response.Header.Get("x-amz-cf-pop"),
 					ip,
 					response.Status,
 					response.Header.Get("x-cache"),
-					response.Header.Get("x-amz-cf-pop"),
 				)
 			}
 		},
